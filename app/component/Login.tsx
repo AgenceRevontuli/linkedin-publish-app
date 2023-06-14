@@ -8,7 +8,7 @@ const Login = () => {
   return (
     <div>
         {!session ? 
-            <button onClick={() => signIn()}>Me connecter</button> : 
+            <button onClick={() => signIn('linkedin')}>Me connecter</button> : 
             <button onClick={() => signOut()}>Me déconnecter</button>
         }
     </div>

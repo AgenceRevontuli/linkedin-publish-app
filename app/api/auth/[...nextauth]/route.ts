@@ -9,9 +9,24 @@ const handler = NextAuth({
     providers: [
         LinkedInProvider({
             clientId: process.env.LINKEDIN_CLIENT_ID || '',
-            clientSecret: process.env.LINKEDIN_CLIENT_SECRET || ''
+            clientSecret: process.env.LINKEDIN_CLIENT_SECRET || '',
+            authorization: { params: { scope: 'r_liteprofile r_emailaddress w_member_social' } },
         })
     ],
+    callbacks: {
+        async session(session: any, user: any) {
+          if (user && user.provider === 'linkedin' && user.profile) {
+            // Ajouter les données du profil LinkedIn à l'objet session.user
+            session.user = { 
+                ...session.user, 
+                profil: user.profile,
+                linkedinAccessToken: user.accessToken, 
+            };
+          }
+          
+          return session;
+        }
+      }
 })
 
 export { handler as GET, handler as POST }
